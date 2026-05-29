@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -45,6 +46,8 @@ class AuthController extends Controller
     // CURRENT USER
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $user = $request->user();
+        Log::debug('user: ', (array)$user);
+        return response()->json($user);
     }
 }

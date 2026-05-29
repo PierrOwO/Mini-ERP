@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import AppLayout from '../../layouts/AppLayout.vue'
 
-import { useProductStore } from '../../stores/productStore'
+import { useProductStore } from '../../stores/productStore.js'
 
 const productStore = useProductStore()
 
