@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DashboardPage from '../pages/dashboard/DashboardPage.vue'
 import ProductsPage from '../pages/products/ProductsPage.vue'
 import LoginPage from '../pages/auth/LoginPage.vue'
+import RegisterPage from '../pages/auth/RegisterPage.vue'
 
 import { useAuthStore } from '../stores/authStore'
 
@@ -20,6 +21,11 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
+        path: '/register',
+        name: 'register',
+        component: RegisterPage
+    },
+    {
         path: '/login',
         name: 'login',
         component: LoginPage
@@ -34,7 +40,6 @@ const router = createRouter({
 router.beforeEach(async (to) => {
     const auth = useAuthStore()
 
-    // jeśli jeszcze nie sprawdziliśmy usera → pobierz
     if (auth.user === null) {
         try {
             await auth.fetchUser()
@@ -43,12 +48,10 @@ router.beforeEach(async (to) => {
         }
     }
 
-    // jeśli route wymaga auth i nie ma usera → login
     if (to.meta.requiresAuth && !auth.user) {
         return '/login'
     }
 
-    // jeśli user zalogowany i próbuje wejść na login → dashboard
     if (to.name === 'login' && auth.user) {
         return '/'
     }

@@ -26,6 +26,20 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
+        async register(name, email, password) {
+            this.loading = true
+            try {
+                await authService.register({
+                    name,
+                    email,
+                    password
+                })
+                await this.fetchUser()
+            } finally {
+                this.loading = false
+            }
+        },
+
         async login(email, password) {
             this.loading = true
             try {
