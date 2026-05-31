@@ -1,8 +1,10 @@
 <script setup>
 import { onMounted } from 'vue'
 import AppLayout from '../../layouts/AppLayout.vue'
+import BaseCard from '../../components/base/BaseCard.vue'
 
-import { useProductStore } from '../../stores/productStore.js'
+import { useProductStore } from '../../stores/productStore'
+import EmptyState from '../../components/ui/EmptyState.vue'
 
 const productStore = useProductStore()
 
@@ -13,20 +15,21 @@ onMounted(() => {
 
 <template>
     <AppLayout>
-        <div class="flex items-center justify-between mb-6">
+
+        <BaseCard class="mb-6">
             <h1 class="text-3xl font-bold">
                 Products
             </h1>
-        </div>
+        </BaseCard>
 
-        <div class="bg-white rounded-lg border overflow-hidden">
+        <BaseCard>
             <table class="w-full">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="text-left p-4">Name</th>
-                        <th class="text-left p-4">SKU</th>
-                        <th class="text-left p-4">Price</th>
-                        <th class="text-left p-4">Quantity</th>
+                <thead>
+                    <tr class="text-left border-b">
+                        <th>Name</th>
+                        <th>SKU</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
                     </tr>
                 </thead>
 
@@ -34,26 +37,20 @@ onMounted(() => {
                     <tr
                         v-for="product in productStore.products"
                         :key="product.id"
-                        class="border-t"
+                        class="border-b"
                     >
-                        <td class="p-4">
-                            {{ product.name }}
-                        </td>
-
-                        <td class="p-4">
-                            {{ product.sku }}
-                        </td>
-
-                        <td class="p-4">
-                            ${{ product.price }}
-                        </td>
-
-                        <td class="p-4">
-                            {{ product.quantity }}
-                        </td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.sku }}</td>
+                        <td>${{ product.price }}</td>
+                        <td>{{ product.quantity }}</td>
                     </tr>
                 </tbody>
             </table>
-        </div>
+
+            <EmptyState v-if="!productStore.products.length">
+                No products found
+            </EmptyState>
+        </BaseCard>
+
     </AppLayout>
 </template>

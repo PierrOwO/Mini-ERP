@@ -1,32 +1,22 @@
 <script setup>
-import { useAuthStore } from '../stores/authStore'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-const auth = useAuthStore()
-const logout = async () => {
-    await auth.logout()
-    router.push('/login')
-}
+import Sidebar from '../components/layout/Sidebar.vue'
+import Topbar from '../components/layout/Topbar.vue'
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-100">
-        <aside class="w-64 fixed left-0 top-0 h-screen bg-white border-r">
-            Sidebar
-            <router-link  style="display: block;" to="/products">Products</router-link>
+    <div class="min-h-screen bg-gray-50 flex">
 
-            <router-link to="/login">  Auth.login</router-link>
-        </aside>
-        <button
-                @click="logout"
-                class="bg-blue-500 text-white w-full p-2"
-            >
-            logout
-            </button>
+        <Sidebar />
 
-        <main class="ml-64 p-6">
-            <slot />
-        </main>
+        <div class="flex-1 ml-64 flex flex-col">
+
+            <Topbar />
+
+            <main class="p-6">
+                <slot />
+            </main>
+
+        </div>
+
     </div>
 </template>
