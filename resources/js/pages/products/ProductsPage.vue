@@ -1,56 +1,91 @@
 <script setup>
-import { onMounted } from 'vue'
-import AppLayout from '../../layouts/AppLayout.vue'
-import BaseCard from '../../components/base/BaseCard.vue'
+import { ref, onMounted, watch } from 'vue'
 
-import { useProductStore } from '../../stores/productStore'
+import AppLayout from '../../layouts/AppLayout.vue'
+
+import BaseCard from '../../components/base/BaseCard.vue'
 import EmptyState from '../../components/ui/EmptyState.vue'
 
-const productStore = useProductStore()
+import ProductSearch from '../../components/products/ProductSearch.vue'
+import ProductTable from '../../components/products/ProductTable.vue'
+import ProductFormModal from '../../components/products/ProductFormModal.vue'
+import ProductActions from '../../components/products/ProductActions.vue'
 
-onMounted(() => {
-    productStore.fetchProducts()
+import { useProductStore } from '../../stores/productStore'
+import productService from '../../services/productService'
+
+const store = useProductStore()
+
+const search = ref('')
+const showModal = ref(false)
+const selectedProduct = ref(null)
+
+onMounted(() => store.fetchProducts())
+
+watch(search, (val) => {
+    store.search = val;
+    store.fetchProducts()
 })
+
+const openCreate = () => {
+    selectedProduct.value = null
+    showModal.value = true
+}
+
+const openEdit = (product) => {
+    selectedProduct.value = product
+    showModal.value = true
+}
+
+const saveProduct = async (data) => {
+    if (selectedProduct.value) {
+        await productService.updateProduct(selectedProduct.value.id, data)
+    } else {
+        await productService.createProduct(data)
+    }
+
+    showModal.value = false
+    await store.fetchProducts()
+}
+
+const deleteProduct = async (id) => {
+    await productService.deleteProduct(id)
+    await store.fetchProducts()
+}
 </script>
 
 <template>
     <AppLayout>
 
-        <BaseCard class="mb-6">
-            <h1 class="text-3xl font-bold">
-                Products
-            </h1>
-        </BaseCard>
-
         <BaseCard>
-            <table class="w-full">
-                <thead>
-                    <tr class="text-left border-b">
-                        <th>Name</th>
-                        <th>SKU</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
+            <ProductActions>
+                <h1 class="text-2xl font-bold">Products</h1>
 
-                <tbody>
-                    <tr
-                        v-for="product in productStore.products"
-                        :key="product.id"
-                        class="border-b"
-                    >
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.sku }}</td>
-                        <td>${{ product.price }}</td>
-                        <td>{{ product.quantity }}</td>
-                    </tr>
-                </tbody>
-            </table>
+                <button
+                    @click="openCreate"
+                    class="bg-blue-600 text-white px-3 py-2 rounded"
+                >
+                    Create
+                </button>
+            </ProductActions>
 
-            <EmptyState v-if="!productStore.products.length">
+            <ProductSearch v-model="search" class="mb-4" />
+
+            <ProductTable
+                :products="store.products"
+                @delete="deleteProduct"
+            />
+
+            <EmptyState v-if="!store.products.length">
                 No products found
             </EmptyState>
         </BaseCard>
+
+        <ProductFormModal
+            v-model="showModal"
+            :product="selectedProduct"
+            @save="saveProduct"
+        />
 
     </AppLayout>
 </template>
