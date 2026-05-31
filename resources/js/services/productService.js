@@ -1,9 +1,12 @@
 import api from './api'
 
 export default {
-    async getProducts(search = '') {
+    async getProducts(search = '', page = 1) {
         const response = await api.get('/products', {
-            params: { search }
+            params: {
+                search,
+                page
+            }
         })
 
         return response.data

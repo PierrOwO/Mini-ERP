@@ -3,6 +3,8 @@ import { ref, onMounted, watch } from 'vue'
 
 import AppLayout from '../../layouts/AppLayout.vue'
 
+import BasePagination from '../../components/base/BasePagination.vue'
+
 import BaseCard from '../../components/base/BaseCard.vue'
 import EmptyState from '../../components/ui/EmptyState.vue'
 
@@ -20,12 +22,16 @@ const search = ref('')
 const showModal = ref(false)
 const selectedProduct = ref(null)
 
-onMounted(() => store.fetchProducts())
+onMounted(() => store.fetchProducts(1))
 
 watch(search, (val) => {
     store.search = val;
     store.fetchProducts()
 })
+
+const changePage = (page) => {
+    store.fetchProducts(page)
+}
 
 const openCreate = () => {
     selectedProduct.value = null
@@ -86,6 +92,10 @@ const deleteProduct = async (id) => {
             :product="selectedProduct"
             @save="saveProduct"
         />
-
+        <BasePagination
+            :meta="store.meta"
+            :links="store.meta?.links"
+            @change="changePage"
+        />
     </AppLayout>
 </template>

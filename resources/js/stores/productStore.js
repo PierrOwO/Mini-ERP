@@ -11,11 +11,11 @@ export const useProductStore = defineStore('product', {
     }),
 
     actions: {
-        async fetchProducts() {
+        async fetchProducts(page = 1) {
             this.loading = true
 
             try {
-                const response = await productService.getProducts(this.search)
+                const response = await productService.getProducts(this.search, page)
 
                 this.products = response.data
                 this.links = response.links
