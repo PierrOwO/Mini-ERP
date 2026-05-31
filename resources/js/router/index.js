@@ -18,7 +18,10 @@ const routes = [
         path: '/products',
         name: 'products',
         component: ProductsPage,
-        meta: { requiresAuth: true }
+        meta: {
+            requiresAuth: true,
+            role: 'admin'
+        }
     },
     {
         path: '/register',
@@ -48,13 +51,14 @@ router.beforeEach(async (to) => {
         }
     }
 
-    if (to.meta.requiresAuth && !auth.user) {
-        return '/login'
+    if (to.meta.role) {
+        const hasRole = auth.user?.roles?.includes(to.meta.role)
+        if (!hasRole) return '/'
     }
 
-    if (to.name === 'login' && auth.user) {
-        return '/'
-    }
+    if (to.meta.requiresAuth && !auth.user) return '/login'
+
+    if (to.name === 'login' && auth.user) return '/'
 })
 
 export default router

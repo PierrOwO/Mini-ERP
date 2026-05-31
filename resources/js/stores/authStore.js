@@ -7,8 +7,12 @@ export const useAuthStore = defineStore('auth', {
         loading: false
     }),
 
+
+
     getters: {
-        isAuth: (state) => !!state.user
+        isAuth: (state)     => !!state.user,
+        isAdmin: (state)    => state.user?.roles?.includes('admin'),
+        isEmployee: (state) => state.user?.roles?.includes('employee'),
     },
 
     actions: {

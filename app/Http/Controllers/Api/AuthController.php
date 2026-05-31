@@ -52,7 +52,10 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return response()->json([
-            'user' => $request->user()
+            'user' => [
+                ...$request->user()->toArray(),
+                'roles' => $request->user()->getRoleNames(),
+            ]
         ]);
     }
 
@@ -73,7 +76,18 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         $user = $request->user();
+
         Log::debug('user: ', (array)$user);
-        return response()->json($user);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+
+        return response()->json([
+            ...$user->toArray(),
+            'roles' => $user->getRoleNames(),
+        ]);
     }
 }
