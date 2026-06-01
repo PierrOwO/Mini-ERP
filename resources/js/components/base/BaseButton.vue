@@ -25,6 +25,7 @@ defineProps({
         font-medium
         hover:bg-blue-700
         active:bg-blue-800
+        hover:cursor-pointer
         transition
         shadow-sm
         disabled:opacity-50

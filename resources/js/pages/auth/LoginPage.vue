@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import { useAuthStore } from '../../stores/authStore'
 import { useRouter } from 'vue-router'
+import BaseButton from '../../components/base/BaseButton.vue'
+import BaseInput from '../../components/base/BaseInput.vue'
+import FloatingLabelInput from '../../components/input/FloatingLabelInput.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -18,31 +21,38 @@ const submit = async () => {
 <template>
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
 
-        <div class="w-96 bg-white p-6 border rounded">
+        <div class="w-96 bg-white p-6 rounded box-shadow">
 
             <h1 class="text-2xl font-bold mb-4">Login</h1>
 
-            <input
+            <FloatingLabelInput
                 v-model="email"
                 placeholder="Email"
                 class="border w-full p-2 mb-2"
+                labelText="Email"
+                autofocus
             />
 
-            <input
+            <FloatingLabelInput
                 v-model="password"
                 type="password"
                 placeholder="Password"
                 class="border w-full p-2 mb-4"
+                labelText="Password"
             />
 
-            <button
+            <BaseButton
                 @click="submit"
                 class="bg-blue-500 text-white w-full p-2"
             >
                 Login
-            </button>
+            </BaseButton>
 
         </div>
 
     </div>
 </template>
+<style lang="css" scoped>
+    .box-shadow{ box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
+
+</style>
