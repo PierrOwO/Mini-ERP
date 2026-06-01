@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import authService from '../services/authService'
-import { useUiStore } from './uiStore'
+import { useToastStore } from './toastStore'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -49,11 +49,28 @@ export const useAuthStore = defineStore('auth', {
             this.loading = true
             try {
                 await authService.login({ email, password })
-                const ui = useUiStore()
+                const toast = useToastStore()
 
-                ui.addToast('Logged in successfully', 'success')
+                toast.success('Logged in successfully')
                 await this.fetchUser()
 
+            } catch (error) {
+                const toast = useToastStore()
+                const errors = error.response?.data?.errors
+
+                if (errors) {
+                    Object.values(errors)
+                        .flat()
+                        .forEach(message => {
+                            toast.error(message)
+                        })
+                } else {
+                    toast.error(
+                        error.response?.data?.message ||
+                        error.message ||
+                        'Something went wrong'
+                    )
+                }
             } finally {
                 this.loading = false
             }
