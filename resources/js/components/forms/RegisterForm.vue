@@ -14,13 +14,15 @@ const email = ref('')
 const password = ref('')
 
 const submit = async () => {
-    await auth.register(
-        name.value,
-        email.value,
-        password.value
-    )
+    try {
+        await auth.register(
+            name.value,
+            email.value,
+            password.value
+        )
 
-    router.push('/')
+        router.push('/')
+    } catch {}
 }
 </script>
 

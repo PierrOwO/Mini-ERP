@@ -12,9 +12,16 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 
+
 const submit = async () => {
-    await auth.login(email.value, password.value)
-    router.push('/')
+    try {
+        await auth.login(
+            email.value,
+            password.value
+        )
+
+        router.push('/')
+    } catch {}
 }
 </script>
 
