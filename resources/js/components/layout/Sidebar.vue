@@ -23,6 +23,7 @@ const auth = useAuthStore()
             </router-link>
 
             <router-link
+                v-if="auth.isAdmin"
                 to="/products"
                 class="px-3 py-2 rounded-lg hover:bg-gray-100"
             >

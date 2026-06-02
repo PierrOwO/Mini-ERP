@@ -40,6 +40,24 @@ export const useAuthStore = defineStore('auth', {
                     password
                 })
                 await this.fetchUser()
+            } catch (error) {
+                const toast = useToastStore()
+                const errors = error.response?.data?.errors
+
+                if (errors) {
+                    Object.values(errors)
+                        .flat()
+                        .forEach(message => {
+                            toast.error(message)
+                        })
+                } else {
+                    toast.error(
+                        error.response?.data?.message ||
+                        error.message ||
+                        'Something went wrong'
+                    )
+                }
+                throw error
             } finally {
                 this.loading = false
             }
@@ -71,6 +89,7 @@ export const useAuthStore = defineStore('auth', {
                         'Something went wrong'
                     )
                 }
+                throw error
             } finally {
                 this.loading = false
             }

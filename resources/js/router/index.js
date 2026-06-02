@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { useAuthStore } from '../stores/authStore'
+
 import DashboardPage from '../pages/dashboard/DashboardPage.vue'
 import ProductsPage from '../pages/products/ProductsPage.vue'
 import LoginPage from '../pages/auth/LoginPage.vue'
 import RegisterPage from '../pages/auth/RegisterPage.vue'
-
-import { useAuthStore } from '../stores/authStore'
+import UsersPage from '../pages/users/UsersPage.vue'
 
 const routes = [
     {
@@ -32,6 +33,15 @@ const routes = [
         path: '/login',
         name: 'login',
         component: LoginPage
+    },
+    {
+        path: '/users',
+        name: 'users',
+        component: UsersPage,
+        meta: {
+            requiresAuth: true,
+            role: 'admin'
+        }
     },
 ]
 
