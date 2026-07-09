@@ -1,4 +1,5 @@
 import api from './api'
+import auth from './auth'
 
 export default {
   async getAll(params = {}) {
@@ -18,6 +19,7 @@ export default {
 
   async update(id, data) {
     const response = await api.put(`/users/${id}`, data)
+    console.log('data', data);
     return response.data
   },
 
@@ -32,7 +34,7 @@ export default {
   },
 
   async me() {
-    const response = await api.get('/user')
+    const response = await auth.get('/user')
     return response.data
   }
 }

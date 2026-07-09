@@ -4,7 +4,7 @@ import UserRow from './UserRow.vue'
 defineProps({
     users: Object
 })
-defineEmits(['delete'])
+defineEmits(['delete', 'changeRole'])
 </script>
 
 <template>
@@ -24,6 +24,7 @@ defineEmits(['delete'])
                 :key="u.id"
                 :user="u"
                 @delete="$emit('delete', $event)"
+                @change-role="(id, role) => $emit('changeRole', id, role)"
             />
         </tbody>
     </table>

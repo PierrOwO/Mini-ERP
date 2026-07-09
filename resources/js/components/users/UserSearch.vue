@@ -23,7 +23,7 @@ watch(localValue, (val) => {
 <template>
     <input
         v-model="localValue"
-        placeholder="Search products..."
+        placeholder="Search users..."
         class="w-full px-3 py-2 border rounded-lg"
     />
 </template>

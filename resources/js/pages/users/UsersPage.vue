@@ -58,6 +58,11 @@ const deleteUser = async (id) => {
     await userService.remove(id)
     await store.fetchUsers()
 }
+
+const changeRole = async (id, role) => {
+    await userService.update(id, {role:role})
+    await store.fetchUsers()
+}
 </script>
 
 <template>
@@ -80,6 +85,7 @@ const deleteUser = async (id) => {
                 :users="store.users"
                 @delete="deleteUser"
                 @edit="openEdit"
+                @change-role="changeRole"
             />
 
             <EmptyState v-if="!store.users.length">
