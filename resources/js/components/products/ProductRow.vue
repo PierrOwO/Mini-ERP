@@ -3,7 +3,7 @@ defineProps({
     product: Object
 })
 
-defineEmits(['delete'])
+defineEmits(['delete', 'addToOrder'])
 </script>
 
 <template>
@@ -14,6 +14,13 @@ defineEmits(['delete'])
         <td>{{ product.quantity }}</td>
 
         <td class="text-right">
+            <button
+                @click="$emit('addToOrder', product.id)"
+                class="text-green-500"
+            >
+                Add to order
+            </button>
+
             <button
                 @click="$emit('delete', product.id)"
                 class="text-red-500"

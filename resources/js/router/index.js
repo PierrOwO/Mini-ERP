@@ -7,6 +7,8 @@ import ProductsPage from '../pages/products/ProductsPage.vue'
 import LoginPage from '../pages/auth/LoginPage.vue'
 import RegisterPage from '../pages/auth/RegisterPage.vue'
 import UsersPage from '../pages/users/UsersPage.vue'
+import OrdersPage from '../pages/orders/OrdersPage.vue'
+import OrderShowItemsPage from '../pages/orders/OrderShowItemsPage.vue'
 
 const routes = [
     {
@@ -43,6 +45,20 @@ const routes = [
             role: 'admin'
         }
     },
+    {
+        path: '/orders',
+        name: 'orders',
+        component: OrdersPage,
+        meta: {
+            requiresAuth: true,
+            role: 'admin'
+        }
+    },
+    {
+        path: '/orders/:id',
+        name: 'orders.show',
+        component: OrderShowItemsPage,
+    }
 ]
 
 const router = createRouter({

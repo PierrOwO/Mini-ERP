@@ -26,5 +26,11 @@ export default {
 
     async deleteProduct(id) {
         return await api.delete(`/products/${id}`)
+    },
+
+    async addToOrder(data) {
+        const response = await api.post(`/order-items`, data)
+
+        return response.data
     }
 }

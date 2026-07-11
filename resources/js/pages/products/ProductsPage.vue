@@ -58,6 +58,14 @@ const deleteProduct = async (id) => {
     await productService.deleteProduct(id)
     await store.fetchProducts()
 }
+const addToOrder = async (id) => {
+    const data = {
+        product_id: id,
+        order_id: 2,
+        quantity: 4
+    }
+    await productService.addToOrder(data)
+}
 </script>
 
 <template>
@@ -80,6 +88,7 @@ const deleteProduct = async (id) => {
             <ProductTable
                 :products="store.products"
                 @delete="deleteProduct"
+                @add-to-order="addToOrder"
             />
 
             <EmptyState v-if="!store.products.length">

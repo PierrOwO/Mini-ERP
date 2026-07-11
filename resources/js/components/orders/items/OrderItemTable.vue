@@ -1,32 +1,31 @@
 <script setup>
-import ProductRow from './ProductRow.vue'
+import OrderItemRow from './OrderItemRow.vue';
 
 defineProps({
-    products: Array
+    items: Array
 })
 
-defineEmits(['delete', 'addToOrder'])
+defineEmits(['delete'])
 </script>
 
 <template>
     <table class="w-full">
         <thead>
             <tr class="text-left border-b">
-                <th>Name</th>
-                <th>SKU</th>
+                <th>Number</th>
                 <th>Price</th>
                 <th>Quantity</th>
-                <th></th>
+                <th>Total</th>
+                <th>Actions</th>
             </tr>
         </thead>
 
         <tbody>
-            <ProductRow
-                v-for="p in products"
-                :key="p.id"
-                :product="p"
+            <OrderItemRow
+                v-for="i in items"
+                :key="i.id"
+                :item="i"
                 @delete="$emit('delete', $event)"
-                @add-to-order="$emit('addToOrder', $event)"
             />
         </tbody>
     </table>

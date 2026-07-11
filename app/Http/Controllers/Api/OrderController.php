@@ -14,11 +14,9 @@ class OrderController extends Controller
     {
         $search = $request->search;
 
-        $order = Order::query()
+        $order = Order::with(['user', 'items'])
             ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('number', 'like', "%{$search}%");
-                });
+                $query->where('number', 'like', "%{$search}%");
             })
             ->latest()
             ->paginate(10);

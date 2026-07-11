@@ -12,7 +12,7 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'number' => $this->number,
-            'user_id' => $this->user_id, // masz literówkę: było uer_id
+            'user' => new UserResource($this->whenLoaded('user')),
             'status' => $this->status,
             'items' => OrderItemResource::collection(
                 $this->whenLoaded('items')
