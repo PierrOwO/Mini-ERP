@@ -12,6 +12,8 @@ defineEmits(['delete'])
     <tr class="bitem-b">
         <td>${{ item.number }}</td>
         <td>${{ item.price }}</td>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.product.sku }}</td>
         <td>{{ item.quantity }}</td>
         <td>${{ totalPrice(item) }}</td>
 

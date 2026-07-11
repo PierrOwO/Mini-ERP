@@ -14,6 +14,8 @@ defineEmits(['delete'])
             <tr class="text-left border-b">
                 <th>Number</th>
                 <th>Price</th>
+                <th>Product name</th>
+                <th>Product sku</th>
                 <th>Quantity</th>
                 <th>Total</th>
                 <th>Actions</th>

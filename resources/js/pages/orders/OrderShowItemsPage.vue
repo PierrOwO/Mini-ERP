@@ -48,7 +48,7 @@ const deleteOrderItem = async (id) => {
 
         <BaseCard>
             <OrderItemActions>
-                <h1 class="text-2xl font-bold">Order items</h1>
+                <h1 class="text-2xl font-bold">Order <b> {{store.order.number}} </b> items</h1>
 
             </OrderItemActions>
 

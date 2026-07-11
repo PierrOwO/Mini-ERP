@@ -13,6 +13,12 @@ export default {
         return response.data
     },
 
+    async showOrder(id) {
+        const response = await api.get(`/orders/${id}`)
+
+        return response.data
+    },
+
     async createOrder(data) {
         const response = await api.post('/orders', data)
 
