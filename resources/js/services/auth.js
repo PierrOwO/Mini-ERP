@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const auth = axios.create({
     baseURL: '/auth',
-  //  withCredentials: true,
+    withCredentials: true,
     withXSRFToken: true,
 })
 

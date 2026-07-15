@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import orderItemService from '../../services/order/orderItemService'
 import orderService from '../../services/order/orderService'
+import { useToastStore } from '../toastStore'
 
 export const useOrderItemStore = defineStore('orderItem', {
     state: () => ({
@@ -36,9 +37,39 @@ export const useOrderItemStore = defineStore('orderItem', {
             this.search = value
             this.fetchOrderItems()
         },
+
         async setOrderId(value) {
             this.order_id = value
             await this.fetchOrderItems()
+        },
+        
+        async addToOrder(data) {
+            const toast = useToastStore()
+            try {
+                await orderItemService.createOrderItem(data)
+                toast.success('Product added successfully')
+
+            } catch (error) {
+                const toast = useToastStore()
+                const errors = error.response?.data?.errors
+
+                if (errors) {
+                    Object.values(errors)
+                        .flat()
+                        .forEach(message => {
+                            toast.error(message)
+                        })
+                } else {
+                    toast.error(
+                        error.response?.data?.message ||
+                        error.message ||
+                        'Something went wrong'
+                    )
+                }
+                throw error
+            } finally {
+                this.loading = false
+            }
         }
     }
 })

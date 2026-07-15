@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { useAuthStore } from '../stores/authStore'
+import { useAuthStore } from '../stores/authStore.js'
 
 import DashboardPage from '../pages/dashboard/DashboardPage.vue'
 import ProductsPage from '../pages/products/ProductsPage.vue'
@@ -58,6 +58,10 @@ const routes = [
         path: '/orders/:id',
         name: 'orders.show',
         component: OrderShowItemsPage,
+        meta: {
+            requiresAuth: true,
+            role: 'admin'
+        }
     }
 ]
 

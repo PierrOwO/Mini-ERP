@@ -50,5 +50,6 @@ const toastStore = useToastStore()
 
 .toast-leave-active {
     position: absolute;
+    width: 100%;
 }
 </style>

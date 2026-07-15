@@ -15,8 +15,10 @@ import ProductActions from '../../components/products/ProductActions.vue'
 
 import { useProductStore } from '../../stores/productStore'
 import productService from '../../services/productService'
+import { useOrderItemStore } from '../../stores/order/orderItemStore.js'
 
 const store = useProductStore()
+const orderItemStore = useOrderItemStore()
 
 const search = ref('')
 const showModal = ref(false)
@@ -58,13 +60,14 @@ const deleteProduct = async (id) => {
     await productService.deleteProduct(id)
     await store.fetchProducts()
 }
+
 const addToOrder = async (id) => {
     const data = {
         product_id: id,
         order_id: 2,
         quantity: 4
     }
-    await productService.addToOrder(data)
+    await orderItemStore.addToOrder(data)
 }
 </script>
 

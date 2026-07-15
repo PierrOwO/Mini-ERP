@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
-import authService from '../services/authService'
+import authService from '../services/auth/authService'
 import { useToastStore } from './toastStore'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: null,
-        loading: false
+        loading: false,
+        loaded: false,
     }),
 
 
@@ -18,6 +19,17 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
 
+        async ensureAuth() {
+            try {
+                const res = await authService.user()
+                this.user = res.data
+                return true
+            } catch {
+                this.user = null
+                return false
+            }
+        },
+        
         async fetchUser() {
             try {
                 const res = await authService.user()
@@ -28,6 +40,8 @@ export const useAuthStore = defineStore('auth', {
 
             } catch {
                 this.user = null
+            } finally {
+                this.loaded = true
             }
         },
 
@@ -100,6 +114,11 @@ export const useAuthStore = defineStore('auth', {
                 await authService.logout()
             } finally {
                 this.user = null
+                
+                localStorage.setItem(
+                    'logout',
+                    Date.now().toString()
+                )
             }
         }
     }

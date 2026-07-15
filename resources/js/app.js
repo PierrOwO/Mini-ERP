@@ -14,10 +14,18 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 
-app.mount('#app')
-
 // INIT AUTH
 await getCsrfCookie()
 
 const auth = useAuthStore()
 auth.fetchUser()
+
+// LISTENER LOGOUT Z INNEJ KARTY
+window.addEventListener('storage', (event) => {
+    if (event.key === 'logout') {
+        auth.user = null
+        router.push('/login')
+    }
+})
+
+app.mount('#app')

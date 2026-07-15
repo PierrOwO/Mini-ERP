@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useUiStore } from '../stores/uiStore'
+import { useToastStore } from '../stores/toastStore'
 
 const http = axios.create({
     baseURL: '/auth',
@@ -10,12 +10,12 @@ const http = axios.create({
 http.interceptors.response.use(
     (response) => response,
     (error) => {
-        const ui = useUiStore()
+        const toast = useToastStore()
 
         if (error.response?.data?.message) {
-            ui.addToast(error.response.data.message, 'error')
+            toast.error(error.response.data.message)
         } else {
-            ui.addToast('Something went wrong', 'error')
+            toast.error('Something went wrong')
         }
 
         return Promise.reject(error)
