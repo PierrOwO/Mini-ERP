@@ -9,6 +9,7 @@ use App\Http\Requests\StoreOrderItemRequest;
 use App\Http\Requests\UpdateOrderItemRequest;
 use App\Http\Resources\OrderItemResource;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class OrderItemController extends Controller
@@ -18,7 +19,7 @@ class OrderItemController extends Controller
         $search = $request->search;
         $orderId = $request->order_id;
 
-        $item = OrderItem::with(['order', 'product'])
+        $orderItem = OrderItem::with(['order', 'product'])
             ->when($orderId, function ($query) use ($orderId) {
                 $query->where('order_id', $orderId);
             })
@@ -28,7 +29,7 @@ class OrderItemController extends Controller
             ->latest()
             ->paginate(10);
 
-        return OrderItemResource::collection($item);
+        return OrderItemResource::collection($orderItem);
     }
 
     public function store(StoreOrderItemRequest $request)
@@ -37,7 +38,7 @@ class OrderItemController extends Controller
 
         $product = Product::findOrFail($validated['product_id']);
 
-        $item = OrderItem::create([
+        $orderItem = OrderItem::create([
             'number' => Str::upper(Str::random(12)),
             'order_id' => $validated['order_id'],
             'product_id' => $product->id,
@@ -45,24 +46,25 @@ class OrderItemController extends Controller
             'price' => $product->price,
         ]);
 
-        return new OrderItemResource($item);
+        return new OrderItemResource($orderItem);
     }
 
-    public function show(OrderItem $item)
+    public function show(OrderItem $orderItem)
     {
-        return new OrderItemResource($item);
+        return new OrderItemResource($orderItem);
     }
 
-    public function update(UpdateOrderItemRequest $request, OrderItem $item)
+    public function update(UpdateOrderItemRequest $request, OrderItem $orderItem)
     {
-        $item->update($request->validated());
+        $orderItem->update($request->validated());
 
-        return new OrderItemResource($item);
+        return new OrderItemResource($orderItem);
     }
 
-    public function destroy(OrderItem $item)
+    public function destroy(OrderItem $orderItem)
     {
-        $item->delete();
+        Log::debug('item: ', (array) $orderItem);
+        $orderItem->delete();
 
         return response()->json([
             'message' => 'OrderItem deleted'

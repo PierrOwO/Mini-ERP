@@ -38,7 +38,7 @@ const changePage = (page) => {
 }
 
 const deleteOrderItem = async (id) => {
-    await orderItemService.deleteOrder(id)
+    await orderItemService.deleteOrderItem(id)
     await store.fetchOrderItems()
 }
 </script>

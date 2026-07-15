@@ -10,7 +10,7 @@ defineEmits(['delete'])
 
 <template>
     <tr class="bitem-b">
-        <td>${{ item.number }}</td>
+        <td>{{ item.number }}</td>
         <td>${{ item.price }}</td>
         <td>{{ item.product.name }}</td>
         <td>{{ item.product.sku }}</td>
@@ -22,7 +22,7 @@ defineEmits(['delete'])
                 @click="$emit('delete', item.id)"
                 class="text-red-500"
             >
-                Delete
+                Delete item
             </button>
         </td>
     </tr>

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->enum('status', ['created', 'processing', 'finished', 'canceled'])->default('created');
             $table->timestamps();
+
+            $table->softDeletes();
         });
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
@@ -26,6 +28,8 @@ return new class extends Migration
             $table->integer('quantity')->nullable();
             $table->string('price')->nullable();
             $table->timestamps();
+            
+            $table->softDeletes();
         });
     }
 
